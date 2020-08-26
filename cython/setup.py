@@ -1,5 +1,28 @@
 # setup.py
 from distutils.core import setup
-from Cython.Build import cythonize
+from setuptools import find_packages, setup, Extension
 
-setup(ext_modules = cythonize('./test.pyx'))
+try:
+    from Cython.Build import cythonize
+    ext_modules = cythonize(
+        [
+            Extension(
+                "*", 
+                ["*.pyx"],
+                include_dirs=[],
+                libraries=[]
+            ),
+        ],
+        compiler_directives = {
+            'language_level' : "3"
+        }
+    )
+except ImportError:
+    ext_modules = None
+
+setup(
+    name = 'test',
+    version = '0.1',
+    packages = find_packages(),
+    ext_modules = ext_modules
+)
